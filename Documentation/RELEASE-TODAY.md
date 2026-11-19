@@ -45,8 +45,9 @@ passed. The nine-variant CI that passed earlier used the Book font and does not
 validate the current tree. The last recorded CI run was rejected before jobs
 started due to payment or a spending limit. Budget was subsequently increased,
 but no successful STIX run has demonstrated that the restriction is gone.
-Physical iOS, browser-hosted WASI, stress/memory, malformed input and independent
-build reproduction remain unverified; decide claims and acceptance criteria
+One physical iPhone PDF/font/diagnostic test has passed; broader physical iOS,
+browser-hosted WASI, stress/memory, malformed input and independent build
+reproduction remain unverified; decide claims and acceptance criteria
 explicitly rather than treating simulator, WASI runner, and deterministic ZIP
 as evidence for those scenarios.
 
@@ -109,7 +110,7 @@ distribution was compliant or cure obligations for prior recipients.
 V1 offers PDF compilation through the current synchronous Swift API and embeds
 the curated STIX font set. It does not promise editor features, SVG/PNG export,
 or NewCM-identical typography. The tested WASI runtime is not a browser test;
-the tested simulator is not a physical device. Publish platform support only
+the separate physical-device test covers one iPhone. Publish platform support only
 for the precise variants and environments verified in the final matrix. The
 release owner decides whether additional promised physical-device, browser,
 stress or accessibility validation is needed before a stable version.

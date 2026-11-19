@@ -9,7 +9,7 @@ Local debug-build evidence for the current STIX production tree:
 | Target | Production bridge evidence | Scope |
 | --- | --- | --- |
 | macOS arm64 | 21 Swift tests passed, including user font overrides and caller-supplied fonts. | Debug build; remote binary distribution remains unverified. |
-| iOS arm64 simulator | PDF/math-font/diagnostic XCTest passed. | Simulator only; no physical-device run. |
+| iOS arm64 simulator | PDF/math-font/diagnostic XCTest passed. | Simulator coverage. |
 | wasm32 WASI | 20 Swift Testing tests passed; a separate consumer compiled a PDF with caller-supplied font bytes and bundled fonts disabled. | The filesystem-based font test is native-only; not a browser. |
 | Linux ARM64/musl | A separate SwiftPM consumer ran in a networkless Alpine VM. | Debug build; not glibc or x86_64. |
 
@@ -50,6 +50,11 @@ On this macOS ARM64 machine, one standalone run of the same 640-call workload
 reported a maximum resident set of 27,754,496 bytes via `/usr/bin/time -l`.
 This is one small-input process-level observation, not a peak-memory bound,
 cross-platform comparison or evidence that repeated use cannot leak.
+
+On 19 November 2026, the same PDF/math-font/diagnostic XCTest also passed on a
+physical iPhone 14 Pro Max running iOS 27.2, using a locally built optimized
+ARM64 iOS Rust bridge. The archive passed the eight-font exact-byte exclusion
+check. This is one physical device and does not cover all iOS versions or models.
 
 `.github/workflows/ci.yml` defines nine candidate variants: macOS ARM64/x86_64,
 iOS ARM64 device/simulator, Linux glibc ARM64/x86_64, Linux musl ARM64/x86_64,
@@ -107,8 +112,8 @@ Before release:
   the GUST/LPPL questions for historical source and artifacts. Verify the
   curated font licenses and platform toolchain/SDK notices appropriate to the
   exact distributed products and consuming apps.
-- Test a real iOS device and any intended browser host. Complete stress,
-  memory and malformed-input testing.
+- Expand physical iOS coverage beyond the one tested device and validate any
+  intended browser host. Complete stress, memory and malformed-input testing.
 - Produce and verify a release-profile bundle and test its immutable remote URL,
   checksum and fresh no-Rust consumer on each supported platform. `Package.swift`
   still names a local artifact rather than a published binary.
