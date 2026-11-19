@@ -46,6 +46,10 @@ consumer passed 400 sequential and 240 task-group PDF/diagnostic checks using
 valid documents and a small set of malformed or missing-resource inputs. The
 reproducible probe is in [Tests/Stress](../Tests/Stress/README.md); these runs
 are not a memory-leak study, exhaustive fuzzing or browser validation.
+On this macOS ARM64 machine, one standalone run of the same 640-call workload
+reported a maximum resident set of 27,754,496 bytes via `/usr/bin/time -l`.
+This is one small-input process-level observation, not a peak-memory bound,
+cross-platform comparison or evidence that repeated use cannot leak.
 
 `.github/workflows/ci.yml` defines nine candidate variants: macOS ARM64/x86_64,
 iOS ARM64 device/simulator, Linux glibc ARM64/x86_64, Linux musl ARM64/x86_64,
