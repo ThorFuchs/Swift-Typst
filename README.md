@@ -9,6 +9,24 @@ outside its current scope. Calls are synchronous and do not invoke a subprocess.
 > limits are documented in
 > [Documentation/PRODUCTION-STATUS.md](Documentation/PRODUCTION-STATUS.md).
 
+## Example gallery
+
+Six one-page documents, rendered to PDF with `TypstCompiler` and the bundled
+fonts. Select a preview to explore its Typst source.
+
+| Editorial | Mathematics |
+| :---: | :---: |
+| [![Editorial page about noticing the everyday](Examples/Images/01-editorial.png)](Examples/Documents/01-editorial.typ) | [![Mathematical notes on derivatives and integrals](Examples/Images/02-mathematics.png)](Examples/Documents/02-mathematics.typ) |
+| **Research report** | **Invoice** |
+| [![Research report with metrics and a table](Examples/Images/03-report.png)](Examples/Documents/03-report.typ) | [![Studio invoice with itemized services](Examples/Images/04-invoice.png)](Examples/Documents/04-invoice.typ) |
+| **Résumé** | **Letter** |
+| [![Two-column design résumé](Examples/Images/05-resume.png)](Examples/Documents/05-resume.typ) | [![A letter from a fictional studio](Examples/Images/06-letter.png)](Examples/Documents/06-letter.typ) |
+
+See the [gallery guide](Examples/README.md) to render the PDFs and regenerate
+the previews. Names, contact details and data in the examples are fictional.
+
+## Installation
+
 Add the published package to a SwiftPM manifest:
 
 ```swift
