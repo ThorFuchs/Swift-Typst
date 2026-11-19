@@ -91,8 +91,16 @@ platform jobs and the combined nine-variant artifact job on 19 November 2026.
 The inner combined ZIP had SwiftPM SHA-256
 `c27788475defb885943d978406ab787a87339314251b9a3305e5499207c1cf76`.
 The explicit license release gate was not requested and was skipped; this is
-not a release decision. Later commits add the manifest-switching and stress-test
-tooling and documentation, so their own CI run must be assessed separately.
+not a release decision. A second [CI run](https://github.com/ThorFuchs/Swift-Typst-Internal/actions/runs/44587096602)
+at `04a0f7fc770a438980217cc9d3ccc37aac994735`, including the manifest-switching
+tooling and stress test, also passed all eight platform jobs, 13 packaging and
+license-tool tests, and the combined nine-variant job. Both runs reported the
+same inner combined ZIP SHA-256 above. The downloaded iOS device and simulator
+archives from each run were separately checked against their recorded hashes and
+were byte-identical between runs. Both iOS jobs reported Rust 1.94.1 and Xcode
+27.2 build `27B52`. This is strong evidence for these two CI builds under their
+recorded environments, not a guarantee across different SDKs or systems. The
+second run also skipped the optional license release gate.
 
 Cargo license evidence covers 298 packages and 181 distinct captured license or
 notice texts, plus bundled-font and Rust standard-library notices. This is a

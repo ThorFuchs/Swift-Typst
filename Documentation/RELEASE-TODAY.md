@@ -42,9 +42,11 @@ allow an unauthenticated public download to be tested.
 The current evidence covers local STIX debug builds on macOS ARM64, iOS ARM64
 simulator, Linux ARM64/musl and WASI; a macOS ARM64 optimized Rust build also
 passed. The nine-variant CI that passed earlier used the Book font and does not
-validate the current tree. The last recorded CI run was rejected before jobs
-started due to payment or a spending limit. Budget was subsequently increased,
-but no successful STIX run has demonstrated that the restriction is gone.
+validate the current tree. After an earlier billing rejection and budget update,
+two clean STIX candidate CI runs passed all eight platform jobs and combined
+nine variants; their scope and checksums are recorded in
+[PRODUCTION-STATUS.md](PRODUCTION-STATUS.md). The optional license release gate
+was not requested in either run.
 One physical iPhone PDF/font/diagnostic test has passed; broader physical iOS,
 browser-hosted WASI, stress/memory, malformed input and independent build
 reproduction remain unverified; decide claims and acceptance criteria
