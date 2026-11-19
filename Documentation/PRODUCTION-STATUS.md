@@ -56,6 +56,14 @@ physical iPhone 14 Pro Max running iOS 27.2, using a locally built optimized
 ARM64 iOS Rust bridge. The archive passed the eight-font exact-byte exclusion
 check. This is one physical device and does not cover all iOS versions or models.
 
+The locally built iOS archive and the archive from the successful clean-candidate
+CI run have different SHA-256 values, even though their recorded source hashes,
+Cargo.lock, Rust version, target and profile match. The CI archive's hash was
+independently checked against its provenance. This was not a controlled rebuild:
+local Xcode 27.2 was build `27B48`, CI used `27B52`, and other inputs such as
+paths and SDK/compiler details were not fully normalized. The result prevents a
+bit-reproducibility claim; it does not isolate the cause of the difference.
+
 `.github/workflows/ci.yml` defines nine candidate variants: macOS ARM64/x86_64,
 iOS ARM64 device/simulator, Linux glibc ARM64/x86_64, Linux musl ARM64/x86_64,
 and WASI. It tests native Swift, iOS simulator and WASI; static Linux runs the
