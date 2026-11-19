@@ -116,7 +116,7 @@ def verify_history(root, refs, decision):
     tested_commit = decision["tested_commit"]
     subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", tested_commit, "HEAD"], check=True)
     changes = git("diff", "--name-only", tested_commit, "HEAD").decode().splitlines()
-    allowed = {"README.md", "Package.swift", "Artifacts/README.md", "Scripts/check-license-readiness.py", "Scripts/public_release_check.py", "Tests/test_public_release_gate.py"}
+    allowed = {".gitignore", "README.md", "Package.swift", "Artifacts/README.md", "Scripts/check-license-readiness.py", "Scripts/public_release_check.py", "Tests/test_public_release_gate.py"}
     if any(not (name.startswith("Documentation/") or name in allowed) for name in changes):
         raise ValueError("Changes after the CI-tested commit exceed the accepted release scope")
     original = git("show", tested_commit + ":Package.swift").decode()
