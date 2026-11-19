@@ -8,6 +8,8 @@
   "krilla_crate_sha256": "27da593198b20eeba65caeb73c2bbeec3e53ab08fa549898312ce81c4fce5e33",
   "krilla_notice_sha256": "7aa87a70e18c9c160b5a14e24b46a8e407858b21fed635920c701657b4bd7976",
   "artifact_sha256": "c27788475defb885943d978406ab787a87339314251b9a3305e5499207c1cf76",
+  "artifact_url": "https://github.com/ThorFuchs/Swift-Typst/releases/download/bridge-v1.0.0/CTypstBridge.zip",
+  "source_version": "1.0.0",
   "tested_commit": "04a0f7fc770a438980217cc9d3ccc37aac994735",
   "public_history": "clean-candidate-only",
   "independent_legal_review": false

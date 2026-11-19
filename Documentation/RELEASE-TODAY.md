@@ -27,10 +27,11 @@ Run the complete CI matrix on the final source snapshot and the explicit license
 gate. Compare binary input provenance against that snapshot. Validate actual
 downloaded artifacts with independent consumers on each claimed target.
 
-The current `Package.swift` points to an ignored local artifact, and the CI
-scripts assume that local declaration. A production remote target needs both a
-URL and SHA-256, while the ZIP itself must first be built and uploaded. Implement
-and test the transition rather than merely editing the manifest: for example,
+The release `Package.swift` is configured for the proposed checksum-pinned
+remote ZIP; CI explicitly switches the checkout to a locally built artifact.
+The actual URL and remote consumption still need verification. A remote target
+needs both a URL and SHA-256, while the ZIP itself must first be built and
+uploaded. Verify the transition rather than merely editing the manifest: for example,
 build the binary from a frozen source commit, upload it under a separate asset
 tag, then make a distribution commit with the immutable URL and checksum. Record
 and verify that the distribution commit has identical bridge inputs, adapt CI's

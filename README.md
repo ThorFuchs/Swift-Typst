@@ -4,11 +4,20 @@ Swift 6.4.2 interface to the embedded Typst 0.15.1 compiler. Version 1 focuses
 on compiling in-memory projects to PDF; editor/IDE APIs and other exports are
 outside its current scope. Calls are synchronous and do not invoke a subprocess.
 
-> **Development status:** the initial API and bridge are implemented, but this
-> repository is not yet a published, production-ready binary distribution.
-> A clean checkout must first build the local Rust artifact. The release checklist
-> and platform limitations are described below and in
-> [Artifacts/README.md](Artifacts/README.md).
+> **Platform scope:** version 1.0.0 supports the platform variants and WASI host
+> described below. Browser hosting, remaining license uncertainty and validation
+> limits are documented in
+> [Documentation/PRODUCTION-STATUS.md](Documentation/PRODUCTION-STATUS.md).
+
+Add the published package to a SwiftPM manifest:
+
+```swift
+.package(url: "https://github.com/ThorFuchs/Swift-Typst.git", from: "1.0.0")
+```
+
+Use the `SwiftTypst` product from the `Swift-Typst` package. The release
+manifest selects a checksum-pinned prebuilt bridge; a supported consumer does
+not need Rust or manual linker flags.
 
 ## Compile a document
 
@@ -66,16 +75,16 @@ Apple Silicon macOS:
 
 ```sh
 rustup target add aarch64-apple-darwin
+python3 Scripts/configure-binary-target.py --local
 sh Scripts/build-artifact.sh aarch64-apple-darwin
 swift test
 swift run --package-path Tests/Consumer Consumer
 ```
 
-This builds a local SwiftPM static-library artifact. Consumers of this local
-artifact need neither Rust nor manual linker flags. The Swift package currently
-points at that ignored local artifact: a clean checkout is not yet a zero-setup
-remote dependency. See [Artifacts/README.md](Artifacts/README.md) for target
-mappings, provenance, ZIP packaging and release prerequisites.
+This changes the checked-out manifest to use an ignored local artifact. Restore
+`Package.swift` from Git to return to the published binary target. See
+[Artifacts/README.md](Artifacts/README.md) for target mappings, provenance,
+ZIP packaging and release prerequisites.
 
 ## Verification and next steps
 

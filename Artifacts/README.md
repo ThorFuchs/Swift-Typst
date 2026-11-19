@@ -1,9 +1,11 @@
 # Bridge artifacts
 
-SwiftPM consumes the locally generated `CTypstBridge.artifactbundle`. Install
-Rust 1.94.1 and the desired Rust target, then from the repository root run:
+The release manifest refers to a checksum-pinned remote bridge ZIP. To build a
+local `CTypstBridge.artifactbundle` instead, install Rust 1.94.1 and the desired
+Rust target, then from the repository root run:
 
 ```sh
+python3 Scripts/configure-binary-target.py --local
 sh Scripts/build-artifact.sh aarch64-apple-darwin
 swift test
 python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require arm64-apple-macosx
@@ -37,8 +39,10 @@ Candidate artifacts are not release approval: the explicit release gate fails
 while the license findings in `Notices/Rust/inventory.json` remain open.
 A clean checkout needs Rust. Before release, assemble and validate all intended
 variants, complete the third-party license audit, publish the ZIP at an immutable
-URL, and update `Package.swift` with its SwiftPM checksum. Test that remote
+URL, and verify that `Package.swift` contains its SwiftPM checksum. Test that remote
 artifact from a clean external consumer before promising no-Rust installation.
+The `--local` switch modifies `Package.swift` in the checkout; restore that file
+from Git to return to the release manifest.
 
 Once an approved ZIP is available at its final immutable HTTPS URL, calculate
 its SwiftPM checksum and configure the release manifest with:

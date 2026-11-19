@@ -26,6 +26,9 @@ below, with attribution, source and notices preserved.
 - Exact nine-variant CI candidate ZIP SHA-256:
   `c27788475defb885943d978406ab787a87339314251b9a3305e5499207c1cf76`,
   built from commit `04a0f7fc770a438980217cc9d3ccc37aac994735`.
+- Proposed SwiftPM release version `1.0.0` and binary location:
+  `https://github.com/ThorFuchs/Swift-Typst/releases/download/bridge-v1.0.0/CTypstBridge.zip`.
+  This address and its public consumer flow must be verified after publication.
 - Deliver the unmodified krilla source archive and captured notices with the
   binary bundle; provide clear downstream instructions and retain access to the
   source and applicable licenses. Artifact tooling checks the bundled contents;

@@ -151,9 +151,10 @@ Before release:
   exact distributed products and consuming apps.
 - Expand physical iOS coverage beyond the one tested device and validate any
   intended browser host. Complete stress, memory and malformed-input testing.
-- Produce and verify a release-profile bundle and test its immutable remote URL,
-  checksum and fresh no-Rust consumer on each supported platform. `Package.swift`
-  still names a local artifact rather than a published binary.
+- Test the release-profile bundle's intended remote URL, checksum and a fresh
+  no-Rust consumer on each supported platform after the binary is available.
+  `Package.swift` is configured for that candidate URL, which must not be
+  treated as verified until the public download and consumers pass.
 - Pin and record SDKs, compiler flags and environment; perform independent
   rebuild comparisons before claiming bit-identical binaries. A deterministic
   ZIP and Cargo lockfile alone do not establish reproducible compilation.

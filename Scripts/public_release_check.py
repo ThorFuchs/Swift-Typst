@@ -72,6 +72,8 @@ def verify_decision(root, inventory, decision):
         "public_history": "clean-candidate-only", "independent_legal_review": False,
         "tested_commit": "04a0f7fc770a438980217cc9d3ccc37aac994735",
         "artifact_sha256": "c27788475defb885943d978406ab787a87339314251b9a3305e5499207c1cf76",
+        "artifact_url": "https://github.com/ThorFuchs/Swift-Typst/releases/download/bridge-v1.0.0/CTypstBridge.zip",
+        "source_version": "1.0.0",
     }
     if any(decision.get(key) != value for key, value in expected.items()):
         raise ValueError("Decision does not match the specifically accepted candidate")
@@ -106,16 +108,22 @@ def load_references(assets, book):
     return refs
 
 
-def verify_history(root, refs, tested_commit):
+def verify_history(root, refs, decision):
     def git(*args):
         return subprocess.check_output(["git", "-C", str(root), *args])
     if git("status", "--porcelain", "--untracked-files=all").strip():
         raise ValueError("Candidate source has unstaged, staged or untracked changes")
+    tested_commit = decision["tested_commit"]
     subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", tested_commit, "HEAD"], check=True)
     changes = git("diff", "--name-only", tested_commit, "HEAD").decode().splitlines()
-    allowed = {"README.md", "Scripts/check-license-readiness.py", "Scripts/public_release_check.py", "Tests/test_public_release_gate.py"}
+    allowed = {"README.md", "Package.swift", "Artifacts/README.md", "Scripts/check-license-readiness.py", "Scripts/public_release_check.py", "Tests/test_public_release_gate.py"}
     if any(not (name.startswith("Documentation/") or name in allowed) for name in changes):
         raise ValueError("Changes after the CI-tested commit exceed the accepted release scope")
+    original = git("show", tested_commit + ":Package.swift").decode()
+    local = '.binaryTarget(name: "CTypstBridge", path: "Artifacts/CTypstBridge.artifactbundle")'
+    remote = f'.binaryTarget(name: "CTypstBridge", url: "{decision["artifact_url"]}", checksum: "{decision["artifact_sha256"]}")'
+    if original.count(local) != 1 or (root / "Package.swift").read_text() != original.replace(local, remote):
+        raise ValueError("Manifest differs from the accepted remote artifact declaration")
     commits = git("rev-list", "--all").splitlines()
     if not commits:
         raise ValueError("Candidate history is empty")
@@ -208,6 +216,6 @@ def check_public_candidate(root, inventory, artifact, assets, book):
     decision = json.loads((root / "Documentation/RELEASE-RISK-DECISION.json").read_text())
     verify_decision(root, inventory, decision)
     refs = load_references(assets, book)
-    commits, blobs = verify_history(root, refs, decision["tested_commit"])
+    commits, blobs = verify_history(root, refs, decision)
     variants = verify_artifact(root, artifact, decision, refs)
     return commits, blobs, variants
