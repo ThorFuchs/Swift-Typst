@@ -128,6 +128,13 @@ runs this check; candidate archives are not publication approval.
 The gate also rejects a missing or malformed `unresolved` field rather than
 interpreting it as an empty review. This is a structural safeguard, not proof
 that an empty list represents a complete legal review.
+The release owner has accepted the remaining krilla provenance risk for one
+specified public candidate; the finding remains unresolved and no independent
+legal review is implied. The decision and its exact scope are in
+[RELEASE-RISK-DECISION.md](RELEASE-RISK-DECISION.md). A separate scoped check
+requires that decision, a clean public candidate history, checksum-verified
+font references and the exact accepted nine-variant archive. The ordinary gate
+remains conservative for other distributions, including the private history.
 The private working tree also prepares self-contained krilla source delivery in
 each artifact; the exact final public assets and the legal scope remain to be
 reviewed. See [the distribution proposal](KRILLA-DISTRIBUTION-PROPOSAL.md).

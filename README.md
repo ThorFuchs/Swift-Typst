@@ -55,7 +55,9 @@ produce a missing-font warning unless the caller supplies the required faces via
 `TypstProject.fonts`. Font selection affects layout, Unicode coverage and PDF
 text extraction; see [the font investigation](Documentation/FONT-INVESTIGATION.md).
 The krilla/resvg provenance and historical font distribution questions remain
-under release review; see [Notices/README.md](Notices/README.md).
+documented in [Notices/README.md](Notices/README.md). The release owner's
+scoped decision on the remaining krilla risk is recorded in
+[RELEASE-RISK-DECISION.md](Documentation/RELEASE-RISK-DECISION.md).
 
 ## Local build
 

@@ -105,10 +105,12 @@ Review packet: [KRILLA-INDEPENDENT-REVIEW.md](KRILLA-INDEPENDENT-REVIEW.md).
 Record reviewer, decision, exact source and archive hashes, obligations, and how
 each obligation reaches downstream users. Review the remaining curated fonts,
 dependencies, SDK and toolchain notices for the exact distribution as well.
-Only resolve entries in the license gate after the corresponding evidence and
-required materials exist. On 19 November the owner indicated an independent
-reviewer is **not available today**. This blocks the requested independently
-reviewed clearance; there is no evidence-based time estimate for resolving it.
+Only resolve entries in the license inventory after the corresponding evidence
+and required materials exist. On 19 November the owner indicated an independent
+reviewer was not available and explicitly accepted the remaining krilla risk for
+the scoped candidate. The unresolved finding and limits of that decision remain
+recorded in [RELEASE-RISK-DECISION.md](RELEASE-RISK-DECISION.md); this is not an
+independent legal review or a new copyright grant.
 
 **Historical NewCM.** Current STIX sources and four local artifacts passed
 exact-byte checks for the eight investigated NewCM files. Old Git commits and
@@ -144,9 +146,11 @@ stress or accessibility validation is needed before a stable version.
    against the scope actually promised. Freeze source and notice hashes, run the
    explicit gate, then proceed to publication only if every required item passes.
 
-If no independent reviewer can participate today, use today to finish the
-candidate and all other checks; do not silently reclassify the open question,
-clear the gate, or publish a preview containing the unresolved material.
+The owner has accepted the documented krilla residual risk for the specified
+candidate. The finding itself remains open; do not silently remove it or apply
+the decision to a different candidate. The default license gate remains blocked,
+while the separate public-candidate check requires the exact decision, source
+history, font references and accepted artifact.
 
 ## Time boxes, conditional on no failures
 
