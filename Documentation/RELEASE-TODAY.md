@@ -78,6 +78,15 @@ no exact byte match for the eight investigated NewCM faces. That historical
 scan is not a complete license audit or validation of a later candidate. Recheck
 the exact final snapshot; an exact-byte scan does not detect transformed font data.
 
+On 19 November, a further scan of the prepared clean candidate examined all
+six then-reachable commits, their 313 distinct Git blobs and the 78 file entries
+inside the included krilla source archive. The exact bytes of the seven pinned
+`typst-assets` NewCM references and historical `NewCM10-Book` were absent.
+The references were checksum-verified first. This is a point-in-time scan of
+those exact byte sequences, not a check for transformed data or other archives,
+nor a determination of obligations from the older private distribution. Scan
+the final public refs and distributed archives again before publication.
+
 ### 3. Clear third-party rights and obligations
 
 **Critical path: krilla.** The exact krilla 0.8.2 NOTICE attributes
