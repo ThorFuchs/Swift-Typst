@@ -1,0 +1,215 @@
+name: Build and test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release_gate:
+        description: Run the release readiness gate after building candidates
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+env:
+  CARGO_BUILD_JOBS: 2
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: xcode-27
+            target: aarch64-apple-darwin
+            triple: arm64-apple-macosx
+          - runner: macos-26-intel
+            target: x86_64-apple-darwin
+            triple: x86_64-apple-macosx
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            triple: x86_64-unknown-linux-gnu
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            triple: aarch64-unknown-linux-gnu
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
+        with:
+          swift-version: '6.4.2'
+      - name: Install pinned Rust toolchain
+        run: |
+          rustup toolchain install 1.94.1 --profile minimal
+          rustup default 1.94.1
+          rustup target add '${{ matrix.target }}'
+      - name: Verify toolchains and license evidence
+        run: |
+          swift --version | grep -E 'Swift version 6\.4\.2'
+          rustc --version
+          cargo metadata --manifest-path Rust/Cargo.toml --locked --format-version 1 > "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/collect-license-evidence.py --check < "$RUNNER_TEMP/cargo-metadata.json"
+      - name: Build bridge and artifact
+        run: sh Scripts/build-artifact.sh '${{ matrix.target }}'
+      - name: Test production API
+        run: swift test
+      - name: Test separate SwiftPM consumer
+        run: swift run --package-path Tests/Consumer Consumer
+      - name: Package tested variant
+        run: python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require '${{ matrix.triple }}'
+      - name: Test zipped SwiftPM dependency
+        run: sh Scripts/test-zipped-consumer.sh .build/CTypstBridge.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bridge-${{ matrix.triple }}
+          path: .build/CTypstBridge.zip
+          if-no-files-found: error
+  ios:
+    runs-on: xcode-27
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
+        with:
+          swift-version: '6.4.2'
+      - name: Install pinned Rust toolchain
+        run: |
+          env -u TOOLCHAINS xcodebuild -version
+          env -u TOOLCHAINS xcrun swift --version | grep -E 'Swift version 6\.4\.2'
+          rustup toolchain install 1.94.1 --profile minimal
+          rustup default 1.94.1
+          rustup target add aarch64-apple-ios-sim aarch64-apple-ios
+      - name: Build simulator bridge
+        run: sh Scripts/build-artifact.sh aarch64-apple-ios-sim
+      - name: Run simulator tests
+        run: |
+          device=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin)["devices"]; print(next(x["udid"] for k,v in d.items() if k.endswith("iOS-27-2") for x in v if x["isAvailable"] and "iPhone" in x["name"]))')
+          env -u TOOLCHAINS xcodebuild -project Tests/iOS/TypstProductionConsumer.xcodeproj -scheme TypstProductionConsumer -destination "platform=iOS Simulator,id=$device" CODE_SIGNING_ALLOWED=NO test
+      - name: Build device bridge and unsigned app
+        run: |
+          sh Scripts/build-artifact.sh aarch64-apple-ios
+          env -u TOOLCHAINS xcodebuild -project Tests/iOS/TypstProductionConsumer.xcodeproj -scheme TypstProductionConsumer -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
+      - name: Verify license evidence and package variants
+        run: |
+          cargo metadata --manifest-path Rust/Cargo.toml --locked --format-version 1 > "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/collect-license-evidence.py --check < "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require arm64-apple-ios --require arm64-apple-ios-simulator
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bridge-ios-arm64
+          path: .build/CTypstBridge.zip
+          if-no-files-found: error
+  wasi:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
+        with:
+          swift-version: '6.4.2'
+      - name: Install pinned Rust and WASI SDK
+        run: |
+          rustup toolchain install 1.94.1 --profile minimal
+          rustup default 1.94.1
+          rustup target add wasm32-wasip1
+          swift sdk install https://download.swift.org/swift-6.4.2-release/wasm-sdk/swift-6.4.2-RELEASE/swift-6.4.2-RELEASE_wasm.artifactbundle.tar.gz --checksum 83baca83553f8c443cda7b84800912e6e709c3acd2e7ebf277794ca5836c0da5
+      - name: Build and test WASI bridge
+        run: |
+          sh Scripts/build-artifact.sh wasm32-wasip1
+          swift test --swift-sdk swift-6.4.2-RELEASE_wasm
+          swift run --package-path Tests/Consumer --swift-sdk swift-6.4.2-RELEASE_wasm Consumer
+      - name: Verify license evidence and package variant
+        run: |
+          cargo metadata --manifest-path Rust/Cargo.toml --locked --format-version 1 > "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/collect-license-evidence.py --check < "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require wasm32-unknown-wasip1
+      - name: Test zipped WASI dependency
+        run: sh Scripts/test-zipped-consumer.sh .build/CTypstBridge.zip --swift-sdk swift-6.4.2-RELEASE_wasm
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bridge-wasm32-unknown-wasip1
+          path: .build/CTypstBridge.zip
+          if-no-files-found: error
+  static_linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-musl
+            triple: aarch64-swift-linux-musl
+            arch: aarch64
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-musl
+            triple: x86_64-swift-linux-musl
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
+        with:
+          swift-version: '6.4.2'
+      - name: Install Rust and matching static Linux SDK
+        run: |
+          rustup toolchain install 1.94.1 --profile minimal
+          rustup default 1.94.1
+          rustup target add '${{ matrix.target }}'
+          swift sdk install https://download.swift.org/swift-6.4.2-release/static-sdk/swift-6.4.2-RELEASE/swift-6.4.2-RELEASE_static-linux-0.1.0.artifactbundle.tar.gz --checksum 3786b179936d9cc9e266dd506bd1654176358d7b25288e243359f4d17cc4dc5a
+      - name: Build bridge with SDK toolchain
+        env:
+          RUST_TARGET: ${{ matrix.target }}
+          TARGET_ARCH: ${{ matrix.arch }}
+        run: |
+          sdk=$(find "$HOME" -type d -path "*/swift-sdks/*.artifactbundle/*/musl-1.2.5.sdk/$TARGET_ARCH" -print -quit)
+          test -n "$sdk"
+          bin=$(dirname "$(command -v swift)")
+          target_var=${RUST_TARGET//-/_}
+          env "CC_${target_var}=$bin/clang" "AR_${target_var}=$bin/llvm-ar" "CFLAGS_${target_var}=--target=$RUST_TARGET --sysroot=$sdk" sh Scripts/build-artifact.sh "$RUST_TARGET"
+      - name: Test static Linux consumer
+        run: swift run --package-path Tests/Consumer --swift-sdk '${{ matrix.triple }}' Consumer
+      - name: Verify license evidence and package variant
+        run: |
+          cargo metadata --manifest-path Rust/Cargo.toml --locked --format-version 1 > "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/collect-license-evidence.py --check < "$RUNNER_TEMP/cargo-metadata.json"
+          python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require '${{ matrix.triple }}'
+      - name: Test zipped static Linux dependency
+        run: sh Scripts/test-zipped-consumer.sh .build/CTypstBridge.zip --swift-sdk '${{ matrix.triple }}'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bridge-${{ matrix.triple }}
+          path: .build/CTypstBridge.zip
+          if-no-files-found: error
+  combine:
+    needs: [native, ios, wasi, static_linux]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: bridge-*
+          path: .build/ci-variants
+      - name: Test artifact and license gate tooling
+        run: python3 -m unittest discover -s Tests -p 'test_*.py' -v
+      - name: Merge and verify variants
+        run: |
+          python3 Scripts/merge-artifacts.py .build/merged/CTypstBridge.artifactbundle .build/ci-variants/bridge-*/CTypstBridge.zip
+          python3 Scripts/package-artifact.py .build/CTypstBridge-combined.zip --bundle .build/merged/CTypstBridge.artifactbundle --require arm64-apple-macosx --require x86_64-apple-macosx --require arm64-apple-ios --require arm64-apple-ios-simulator --require x86_64-unknown-linux-gnu --require aarch64-unknown-linux-gnu --require x86_64-swift-linux-musl --require aarch64-swift-linux-musl --require wasm32-unknown-wasip1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bridge-combined-candidate
+          path: .build/CTypstBridge-combined.zip
+          if-no-files-found: error
+  release_gate:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_gate }}
+    needs: [combine]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Enforce license review
+        run: python3 Scripts/check-license-readiness.py

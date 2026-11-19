@@ -1,0 +1,4 @@
+# GitHub's xcode-27 hosted runner label postdates actionlint 1.7.12's label list.
+self-hosted-runner:
+  labels:
+    - xcode-27

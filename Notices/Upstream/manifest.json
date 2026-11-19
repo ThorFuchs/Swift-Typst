@@ -1,0 +1,67 @@
+{
+  "Upstream/comemo/LICENSE-APACHE": {
+    "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "url": "https://github.com/typst/comemo/blob/0eaf0707f37032ad936d6d63bb60755fdd1d2cda/LICENSE-APACHE"
+  },
+  "Upstream/comemo/LICENSE-MIT": {
+    "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1",
+    "url": "https://github.com/typst/comemo/blob/0eaf0707f37032ad936d6d63bb60755fdd1d2cda/LICENSE-MIT"
+  },
+  "Upstream/glidesort/Cargo.toml": {
+    "sha256": "3188f2461c9a705f063b0572c04217d7510c7b6ba3dd5f7fa389a6490d1c9142",
+    "url": "https://github.com/orlp/glidesort/blob/c4df9518ec23a424a867b3d50967f0aaafe3c0fd/Cargo.toml"
+  },
+  "Upstream/glidesort/README.md": {
+    "sha256": "08961b3f37120e88e205e2def4af6da46f9eba8700fa80553fd0b8d8bb3d208a",
+    "url": "https://github.com/orlp/glidesort/blob/c4df9518ec23a424a867b3d50967f0aaafe3c0fd/README.md"
+  },
+  "Upstream/krilla/LICENSE_APACHE": {
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "url": "https://github.com/LaurenzV/krilla/blob/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/LICENSE_APACHE"
+  },
+  "Upstream/krilla/LICENSE_MIT": {
+    "sha256": "9d1eb142840c7acfd5511b4dd298cece3f0053f5809228906445cd8a3365592f",
+    "url": "https://github.com/LaurenzV/krilla/blob/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/LICENSE_MIT"
+  },
+  "Upstream/krilla/MPL-2.0-reference.txt": {
+    "note": "Reference text; applicability to the krilla notice requires review.",
+    "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+    "url": "https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt"
+  },
+  "Upstream/krilla/NOTICE.md": {
+    "sha256": "7aa87a70e18c9c160b5a14e24b46a8e407858b21fed635920c701657b4bd7976",
+    "url": "https://github.com/LaurenzV/krilla/blob/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/NOTICE.md"
+  },
+  "Upstream/roman-numerals/LICENCE.rst": {
+    "sha256": "c744ffc7e120b22e6620b613298dc003a2613c0ae489ee414fb1d473f24f916f",
+    "url": "https://github.com/AA-Turner/roman-numerals/blob/ec81337f99d8b557a6fce10f674c054050551444/LICENCE.rst"
+  },
+  "Upstream/typst/LICENSE": {
+    "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+    "url": "https://github.com/typst/typst/blob/9dfd3a08500b7896045f907433cf7b4b02434fad/LICENSE"
+  },
+  "Upstream/typst/NOTICE": {
+    "sha256": "1778244777547c281b6f5fa9fc0c18ab21f8d4491c803f64e09046800f5fcb26",
+    "url": "https://github.com/typst/typst/blob/9dfd3a08500b7896045f907433cf7b4b02434fad/NOTICE"
+  },
+  "Upstream/wasm-tools/LICENSE-APACHE": {
+    "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "url": "https://github.com/bytecodealliance/wasm-tools/blob/35f8671bce74190ef0b00ce36c399b053b490374/LICENSE-APACHE"
+  },
+  "Upstream/wasm-tools/LICENSE-Apache-2.0_WITH_LLVM-exception": {
+    "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5",
+    "url": "https://github.com/bytecodealliance/wasm-tools/blob/35f8671bce74190ef0b00ce36c399b053b490374/LICENSE-Apache-2.0_WITH_LLVM-exception"
+  },
+  "Upstream/wasm-tools/LICENSE-MIT": {
+    "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "url": "https://github.com/bytecodealliance/wasm-tools/blob/35f8671bce74190ef0b00ce36c399b053b490374/LICENSE-MIT"
+  },
+  "Upstream/wasmi/LICENSE-APACHE": {
+    "sha256": "f031c1608e4a19e8cbcc3394cdba838067e79189610227459e8ffcd669e6f52d",
+    "url": "https://github.com/wasmi-labs/wasmi/blob/8273dfb09d493971b7bb12fe614d740cdc857175/LICENSE-APACHE"
+  },
+  "Upstream/wasmi/LICENSE-MIT": {
+    "sha256": "172bc1497507c1c363496bc23b0f16de8fa8e94befa85db6c8d9fa790e0a8657",
+    "url": "https://github.com/wasmi-labs/wasmi/blob/8273dfb09d493971b7bb12fe614d740cdc857175/LICENSE-MIT"
+  }
+}

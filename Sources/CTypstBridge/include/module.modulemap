@@ -1,0 +1,4 @@
+module CTypstBridge {
+    header "typst_bridge.h"
+    export *
+}

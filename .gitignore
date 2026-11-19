@@ -1,0 +1,12 @@
+.build/
+Spike/Rust/target/
+.swiftpm/
+Spike/iOS/*.xcodeproj/
+Spike/ArtifactConsumer/Wrapper/Artifacts/*.artifactbundle/
+Spike/ArtifactConsumer/iOS/*.xcodeproj/
+Artifacts/*.artifactbundle/
+Rust/target/
+
+Tests/Consumer/.build/
+Tests/iOS/*.xcodeproj/project.xcworkspace/
+Tests/iOS/*.xcodeproj/xcuserdata/

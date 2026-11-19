@@ -1,0 +1,6 @@
+# License evidence is retained byte-for-byte for the recorded SHA-256 values.
+Notices/** -text
+
+# Keep upstream binary font files byte-identical.
+Rust/fonts/*.otf -text
+Rust/fonts/*.ttf -text
