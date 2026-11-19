@@ -63,6 +63,11 @@ independently checked against its provenance. This was not a controlled rebuild:
 local Xcode 27.2 was build `27B48`, CI used `27B52`, and other inputs such as
 paths and SDK/compiler details were not fully normalized. The result prevents a
 bit-reproducibility claim; it does not isolate the cause of the difference.
+The two `ar` archives each contained 1,771 members in matching order, with the
+same name/timestamp/owner/mode header fields; 949 member lengths and 1,043
+member payloads differed. Payload comparisons include any extended archive-name
+data, so this narrows the difference beyond simple archive-header timestamps
+without attributing it to a particular toolchain component.
 
 `.github/workflows/ci.yml` defines nine candidate variants: macOS ARM64/x86_64,
 iOS ARM64 device/simulator, Linux glibc ARM64/x86_64, Linux musl ARM64/x86_64,
