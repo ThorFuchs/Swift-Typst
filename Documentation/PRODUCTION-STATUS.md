@@ -72,6 +72,15 @@ predates the current STIX changes and does not validate them.
 The former `swift-actions/setup-swift@v2` was removed: its hardcoded version
 list ends at Swift 6.2.1 and rejects 6.4.2. The replacement is pinned by commit.
 
+The clean STIX candidate's private [CI run](https://github.com/ThorFuchs/Swift-Typst-Internal/actions/runs/44583198656)
+on root commit `1aa13efd4a7f675fe597d606426121623a39a973` passed all eight
+platform jobs and the combined nine-variant artifact job on 19 November 2026.
+The inner combined ZIP had SwiftPM SHA-256
+`c27788475defb885943d978406ab787a87339314251b9a3305e5499207c1cf76`.
+The explicit license release gate was not requested and was skipped; this is
+not a release decision. Later commits add the manifest-switching and stress-test
+tooling and documentation, so their own CI run must be assessed separately.
+
 Cargo license evidence covers 298 packages and 181 distinct captured license or
 notice texts, plus bundled-font and Rust standard-library notices. This is a
 conservative dependency superset, not proof of every component in every binary.
