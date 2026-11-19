@@ -40,6 +40,20 @@ variants, complete the third-party license audit, publish the ZIP at an immutabl
 URL, and update `Package.swift` with its SwiftPM checksum. Test that remote
 artifact from a clean external consumer before promising no-Rust installation.
 
+Once an approved ZIP is available at its final immutable HTTPS URL, calculate
+its SwiftPM checksum and configure the release manifest with:
+
+```sh
+swift package compute-checksum /path/to/CTypstBridge.zip
+python3 Scripts/configure-binary-target.py --remote-url 'https://example.org/releases/CTypstBridge.zip' --checksum '<actual-sha256>'
+```
+
+Use the actual asset URL and checksum, never the illustrative values above. CI
+switches a checked-out manifest to `--local` before building its own variants;
+verify the final remote manifest separately from clean external consumers with
+no local artifact. The script only edits the manifest: it does not upload,
+download or verify the availability of the URL.
+
 The font verifier checks each archive against the seven excluded faces present
 in the pinned `typst-assets` source. To additionally check the historical Book
 face, provide its original file with `SWIFT_TYPST_EXCLUDED_BOOK_FONT` while

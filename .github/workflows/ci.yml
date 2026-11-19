@@ -37,6 +37,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Select the locally built bridge
+        run: python3 Scripts/configure-binary-target.py --local
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -73,6 +75,8 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Select the locally built bridge
+        run: python3 Scripts/configure-binary-target.py --local
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -108,6 +112,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Select the locally built bridge
+        run: python3 Scripts/configure-binary-target.py --local
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -151,6 +157,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Select the locally built bridge
+        run: python3 Scripts/configure-binary-target.py --local
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
