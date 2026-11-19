@@ -40,6 +40,13 @@ passed. This verifies the packaging change on macOS, not a new nine-variant
 release build or public URL. Older local bundles carry earlier notice provenance
 and must be reassembled before packaging with the updated working tree.
 
+An optimized WASI bridge subsequently passed the eight-font exclusion check
+and 20 Swift Testing tests with Swift 6.4.2. A separate release-profile macOS
+consumer passed 400 sequential and 240 task-group PDF/diagnostic checks using
+valid documents and a small set of malformed or missing-resource inputs. The
+reproducible probe is in [Tests/Stress](../Tests/Stress/README.md); these runs
+are not a memory-leak study, exhaustive fuzzing or browser validation.
+
 `.github/workflows/ci.yml` defines nine candidate variants: macOS ARM64/x86_64,
 iOS ARM64 device/simulator, Linux glibc ARM64/x86_64, Linux musl ARM64/x86_64,
 and WASI. It tests native Swift, iOS simulator and WASI; static Linux runs the

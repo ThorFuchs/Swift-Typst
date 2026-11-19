@@ -59,6 +59,9 @@ jobs:
         run: swift test
       - name: Test separate SwiftPM consumer
         run: swift run --package-path Tests/Consumer Consumer
+      - name: Exercise repeated and concurrent compiles
+        if: matrix.triple == 'arm64-apple-macosx'
+        run: swift run --package-path Tests/Stress -c release Stress
       - name: Package tested variant
         run: python3 Scripts/package-artifact.py .build/CTypstBridge.zip --require '${{ matrix.triple }}'
       - name: Test zipped SwiftPM dependency
