@@ -1,6 +1,11 @@
 # License evidence is retained byte-for-byte for the recorded SHA-256 values.
-Notices/** -text
+Notices/** -text linguist-vendored
 
 # Keep upstream binary font files byte-identical.
 Rust/fonts/*.otf -text
 Rust/fonts/*.ttf -text
+
+# Keep build tooling, investigations, and tests out of the primary language statistics.
+Scripts/** linguist-detectable=false
+Spike/** linguist-detectable=false
+Tests/** linguist-detectable=false

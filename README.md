@@ -1,5 +1,15 @@
 # Swift-Typst
 
+[![CI](https://github.com/ThorFuchs/Swift-Typst/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ThorFuchs/Swift-Typst/actions/workflows/ci.yml)
+[![Documentation](https://img.shields.io/badge/DocC-documentation-5B5BD6)](https://thorfuchs.github.io/Swift-Typst/)
+[![Swift 6.4.2](https://img.shields.io/badge/Swift-6.4.2-F05138?logo=swift&logoColor=white)](https://swift.org/)
+[![Typst 0.15.1](https://img.shields.io/badge/Typst-0.15.1-239DAD)](https://typst.app/)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
+[Read the Swift API documentation →](https://thorfuchs.github.io/Swift-Typst/)
+
+The documentation website follows `main`; released versions can differ.
+
 Swift 6.4.2 interface to the embedded Typst 0.15.1 compiler. Version 1 focuses
 on compiling in-memory projects to PDF; editor/IDE APIs and other exports are
 outside its current scope. Calls are synchronous and do not invoke a subprocess.
@@ -105,6 +115,10 @@ This changes the checked-out manifest to use an ignored local artifact. Restore
 ZIP packaging and release prerequisites.
 
 ## Verification and next steps
+
+Build the DocC reference locally on macOS with `sh Scripts/build-docc.sh`.
+The documentation workflow builds the same static site and publishes it to
+GitHub Pages when relevant files on `main` change.
 
 The implementation's local evidence, including precise scope and remaining
 release gates, is in [Documentation/PRODUCTION-STATUS.md](Documentation/PRODUCTION-STATUS.md).

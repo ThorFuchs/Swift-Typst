@@ -39,6 +39,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Select the locally built bridge
         run: python3 Scripts/configure-binary-target.py --local
+      # Hosted Linux images can arrive without populated APT package lists.
+      - name: Refresh Linux package lists
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -o Acquire::Retries=3
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -80,6 +84,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Select the locally built bridge
         run: python3 Scripts/configure-binary-target.py --local
+      # Hosted Linux images can arrive without populated APT package lists.
+      - name: Refresh Linux package lists
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -o Acquire::Retries=3
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -117,6 +125,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Select the locally built bridge
         run: python3 Scripts/configure-binary-target.py --local
+      # Hosted Linux images can arrive without populated APT package lists.
+      - name: Refresh Linux package lists
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -o Acquire::Retries=3
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'
@@ -162,6 +174,10 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Select the locally built bridge
         run: python3 Scripts/configure-binary-target.py --local
+      # Hosted Linux images can arrive without populated APT package lists.
+      - name: Refresh Linux package lists
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -o Acquire::Retries=3
       - uses: tryswift/setup-swift@ce5fe39afee72fd792fabab6db8ec3005962daf7 # v1
         with:
           swift-version: '6.4.2'

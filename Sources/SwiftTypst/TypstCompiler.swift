@@ -9,9 +9,15 @@ public struct TypstCompiler: Sendable {
     /// The pinned upstream Typst release.
     public static let engineVersion = "0.15.1"
 
+    /// Creates a compiler for independent synchronous compile calls.
     public init() {}
 
     /// Compiles a single UTF-8 source using bundled fonts.
+    /// - Parameters:
+    ///   - source: The Typst source text.
+    ///   - options: Input, clock, PDF, and resource settings.
+    /// - Returns: The exported PDF, page counts, and warnings.
+    /// - Throws: A ``TypstError`` if compilation or export fails.
     public func compilePDF(
         _ source: String,
         options: TypstCompileOptions = .init()
@@ -23,6 +29,11 @@ public struct TypstCompiler: Sendable {
     }
 
     /// Compiles a snapshot with explicitly supplied files, packages, and fonts.
+    /// - Parameters:
+    ///   - project: The entry point and its in-memory resources.
+    ///   - options: Input, clock, PDF, and resource settings.
+    /// - Returns: The exported PDF, page counts, and warnings.
+    /// - Throws: A ``TypstError`` if compilation or export fails.
     public func compilePDF(
         _ project: TypstProject,
         options: TypstCompileOptions = .init()
